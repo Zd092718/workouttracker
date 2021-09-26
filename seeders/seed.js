@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const db = require("../models/workoutModel");
+const db = require("../models/workout");
 
 mongoose.connect("mongodb://localhost/workout", {
   useNewUrlParser: true,
@@ -136,3 +136,5 @@ db.Workout.deleteMany({})
     console.error(err);
     process.exit(1);
   });
+const data = db.Workout.find({});
+console.log(data);
