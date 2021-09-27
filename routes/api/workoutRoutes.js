@@ -18,7 +18,7 @@ router.get("/", (req, res) => {
     });
 });
 
-//gets all workouts in range
+//gets all workouts in a week
 router.get("/range", (req, res) => {
   db.Workout.aggregate([
     {
@@ -36,15 +36,24 @@ router.get("/range", (req, res) => {
     });
 });
 
-// add exercise
-router.put("/:id", async (req, res) => {
-  await db.Workout.updateOne({}, (error, data) => {
-    if (error) {
-      res.send(error);
-    } else {
-      res.json(data);
+// add exercise to workout
+router.put("/:id", (req, res) => {
+  db.Workout.findByIdAndUpdate(
+    req.params.id,
+    {
+      $push: { exercises: req.body },
+    },
+    {
+      new: true,
+      runValidators: true,
     }
-  });
+  )
+    .then((dbExercise) => {
+      res.json(dbExercise);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
 });
 
 //post route for new workout
