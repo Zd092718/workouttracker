@@ -27,8 +27,10 @@ router.get("/range", (req, res) => {
       },
     },
   ])
+    .sort({ _id: -1 })
     .limit(7)
     .then((dbExercise) => {
+      dbExercise.sort((a, b) => (a._id > b._id ? 1 : -1));
       res.json(dbExercise);
     })
     .catch((err) => {
